@@ -1,2 +1,4 @@
 *.itl linguist-language=ITL
 *.itl linguist-detectable=true
+# For highlighting until ITL is official, highlight as python-like:
+# *.itl linguist-language=Python
