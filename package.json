@@ -1,0 +1,20 @@
+{
+  "name": "itl-lang",
+  "displayName": "ITL - Index Text Language",
+  "version": "1.4.0",
+  "publisher": "BlueBixt",
+  "engines": {"vscode": "^1.60.0"},
+  "contributes": {
+    "languages": [{
+      "id": "itl",
+      "aliases": ["ITL", "itl"],
+      "extensions": [".itl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "itl",
+      "scopeName": "source.itl",
+      "path": "./syntaxes/itl.tmLanguage.json"
+    }]
+  }
+}
