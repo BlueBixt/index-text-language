@@ -1,0 +1,16 @@
+itl-lang("start");
+
+func{} greet{} name{} {
+  print{} "Hello " + name{} + " from function tool!"{};
+}
+
+var name = "Rogge"; var
+input{} name{} statement{}, when-me{}
+
+call{} greet{} name{};
+
+loop{} 2 {
+  print{} "ITL v1.4.0 Func Tool works!"{};
+}
+
+itl-lang("end");
