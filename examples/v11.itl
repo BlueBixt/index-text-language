@@ -1,0 +1,8 @@
+itl-lang("start");
+var name = "Rogge";
+print name;
+print "What is your lang?";
+input name;
+print "Nice! Hello ";
+print name;
+itl-lang("end");

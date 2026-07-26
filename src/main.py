@@ -17,6 +17,6 @@ def run_itl_file(path):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("ITL Numbered v1.0.0 - BlueBixt Org")
+        print("ITL Numbered v1.1.0 - BlueBixt Org")
     else:
         run_itl_file(sys.argv[1])
