@@ -49,13 +49,13 @@ cd index-text-language
 
 Create `hello.itl`:
 ```itl
-Print{Hello, World!}
+print "Hello, World!";
 ```
 
 Create `var.itl`:
 ```itl
-Var{name: Rogge}
-Print{Hello {name}}
+var{name: Rogge}
+print "Hello name{}"
 ```
 
 Create `logic.itl`:
