@@ -1,3 +1,3 @@
 itl-lang("start");
 print "ITL Numbered v1.0.0 by BlueBixt works!";
-itl-lang("end");
+itl-lang("when-end");
