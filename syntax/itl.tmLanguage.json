@@ -1,0 +1,47 @@
+{
+  "name": "ITL - Index Text Language",
+  "scopeName": "source.itl",
+  "fileTypes": ["itl"],
+  "patterns": [
+    {
+      "name": "comment.line.number-sign.itl",
+      "match": "#.*$"
+    },
+    {
+      "name": "comment.line.double-slash.itl",
+      "match": "//.*$"
+    },
+    {
+      "name": "comment.block.itl",
+      "begin": "/\\*",
+      "end": "\\*/"
+    },
+    {
+      "name": "keyword.control.itl.start-end",
+      "match": "\\bitl-lang\\b"
+    },
+    {
+      "name": "entity.name.function.tool.itl",
+      "match": "\\b(var|print|input|loop|if|else|func|call|number|count|statement|when-me|name)\\b(?=\\s*\\{)"
+    },
+    {
+      "name": "string.quoted.double.itl",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.itl",
+          "match": "\\\\."
+        }
+      ]
+    },
+    {
+      "name": "constant.numeric.itl",
+      "match": "\\b\\d+\\b"
+    },
+    {
+      "name": "punctuation.brace.itl",
+      "match": "[\\{\\}\\(\\)]"
+    }
+  ]
+}
