@@ -1,1 +1,2 @@
 *.itl linguist-language=ITL
+*.itl linguist-detectable=true
