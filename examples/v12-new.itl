@@ -1,0 +1,12 @@
+itl-lang("start");
+var name = "Rogge"; var
+print "Who are you?";
+input{} name{} statement{}, when-me{}
+if name statement{} "Rogge" {
+  print "Welcome Owner! " + name;
+}
+if name statement{} "BlueBixt" {
+  print "Hello Founder!";
+}
+print "Hello " + name + "! Welcome to ITL v1.2.0";
+itl-lang("end");

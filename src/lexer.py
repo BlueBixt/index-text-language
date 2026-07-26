@@ -1,19 +1,25 @@
 import re
-
 TOKEN_SPEC = [
     ('ITL_LANG', r'itl-lang'),
+    ('IF', r'if'),
     ('PRINT', r'print'),
     ('VAR', r'var'),
     ('INPUT', r'input'),
+    ('STATEMENT', r'statement'),
+    ('WHEN_ME', r'when-me'),
     ('STRING', r'"[^"]*"'),
-    ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*'),
+    ('EQEQ', r'=='),
     ('EQUALS', r'='),
+    ('PLUS', r'\+'),
     ('LPAREN', r'\('),
     ('RPAREN', r'\)'),
+    ('LBRACE', r'\{'),
+    ('RBRACE', r'\}'),
+    ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_\-]*'),
     ('SEMICOLON', r';'),
+    ('COMMA', r','),
     ('SKIP', r'[ \t\n]+'),
 ]
-
 class Lexer:
     def __init__(self, code):
         self.code = code
