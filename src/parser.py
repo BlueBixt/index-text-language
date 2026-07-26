@@ -17,19 +17,27 @@ class Parser:
                 if self.peek()[0]!= 'IDENTIFIER':
                     continue
                 _, name = self.advance()
-                if self.peek()[0] == 'EQUALS': self.advance()
-                _, sval = self.advance()
-                statements.append({'type': 'var', 'name': name, 'value': sval.strip('"')})
+                if self.peek()[0] in ('EQUALS','STATEMENT'): self.advance()
+                # skip LBRACE RBRACE if statement{} used as =
+                if self.peek()[0]=='LBRACE':
+                    self.advance()
+                    if self.peek()[0]=='RBRACE': self.advance()
+                _, sval = self.advance() # STRING or INT
+                val = sval.strip('"') if sval.startswith('"') else sval
+                statements.append({'type': 'var', 'name': name, 'value': val})
                 while self.pos < len(self.tokens) and self.peek()[0] not in ('SEMICOLON',):
                     if self.peek()[0] == 'VAR': break
                     self.advance()
-                if self.peek()[0] == 'SEMICOLON': self.advance()
+                if self.pos < len(self.tokens) and self.peek()[0] == 'SEMICOLON': self.advance()
                 if self.pos < len(self.tokens) and self.peek()[0] == 'VAR': self.advance()
             elif kind == 'PRINT':
                 self.advance()
+                if self.peek()[0]=='LBRACE': # print{} tool
+                    self.advance()
+                    if self.peek()[0]=='RBRACE': self.advance()
                 k2, v2 = self.advance()
                 expr = []
-                if k2 in ('STRING','IDENTIFIER'):
+                if k2 in ('STRING','IDENTIFIER','INT'):
                     expr.append((k2, v2.strip('"') if k2=='STRING' else v2))
                     while self.pos < len(self.tokens) and self.peek()[0] == 'PLUS':
                         self.advance()
@@ -39,6 +47,9 @@ class Parser:
                 if self.pos < len(self.tokens) and self.peek()[0] == 'SEMICOLON': self.advance()
             elif kind == 'INPUT':
                 self.advance()
+                if self.peek()[0]=='LBRACE':
+                    self.advance()
+                    if self.peek()[0]=='RBRACE': self.advance()
                 var_name = "input_var"
                 for i in range(self.pos, min(self.pos+10, len(self.tokens))):
                     if self.tokens[i][0] == 'IDENTIFIER':
@@ -48,15 +59,19 @@ class Parser:
                 while self.pos < len(self.tokens) and self.peek()[0]!= 'SEMICOLON':
                     self.advance()
                 if self.pos < len(self.tokens) and self.peek()[0] == 'SEMICOLON': self.advance()
-            elif kind == 'IF':
+            elif kind == 'LOOP':
                 self.advance()
-                if self.pos >= len(self.tokens): break
-                _, var_name = self.advance()
-                while self.pos < len(self.tokens) and self.peek()[0] not in ('STRING','EQEQ'):
+                if self.peek()[0]=='LBRACE':
                     self.advance()
-                if self.pos < len(self.tokens) and self.peek()[0] == 'EQEQ': self.advance()
-                if self.pos >= len(self.tokens): break
-                _, comp_val = self.advance()
+                    if self.peek()[0]=='RBRACE': self.advance()
+                # loop{} 3 or loop{} count{}
+                count_val = 3
+                if self.pos < len(self.tokens) and self.peek()[0]=='INT':
+                    count_val = int(self.advance()[1])
+                elif self.pos < len(self.tokens) and self.peek()[0]=='IDENTIFIER':
+                    # count{} tool -> use 5 as default or var
+                    self.advance()
+                    count_val = 3
                 while self.pos < len(self.tokens) and self.peek()[0]!= 'LBRACE':
                     self.advance()
                 if self.pos < len(self.tokens) and self.peek()[0] == 'LBRACE': self.advance()
@@ -64,9 +79,12 @@ class Parser:
                 while self.pos < len(self.tokens) and self.peek()[0]!= 'RBRACE':
                     if self.peek()[0] == 'PRINT':
                         self.advance()
+                        if self.peek()[0]=='LBRACE':
+                            self.advance()
+                            if self.peek()[0]=='RBRACE': self.advance()
                         k2, v2 = self.advance()
                         expr = []
-                        if k2 in ('STRING','IDENTIFIER'):
+                        if k2 in ('STRING','IDENTIFIER','INT'):
                             expr.append((k2, v2.strip('"') if k2=='STRING' else v2))
                             while self.pos < len(self.tokens) and self.peek()[0] == 'PLUS':
                                 self.advance()
@@ -77,7 +95,54 @@ class Parser:
                     else:
                         self.advance()
                 if self.pos < len(self.tokens) and self.peek()[0] == 'RBRACE': self.advance()
-                statements.append({'type': 'if', 'var': var_name, 'value': comp_val.strip('"'), 'block': block})
+                statements.append({'type': 'loop', 'count': count_val, 'block': block})
+            elif kind == 'IF':
+                self.advance()
+                if self.pos >= len(self.tokens): break
+                _, var_name = self.advance()
+                while self.pos < len(self.tokens) and self.peek()[0] not in ('STRING','EQEQ','STATEMENT'):
+                    self.advance()
+                if self.peek()[0] in ('EQEQ','STATEMENT'): self.advance()
+                if self.peek()[0]=='LBRACE':
+                    self.advance()
+                    if self.peek()[0]=='RBRACE': self.advance()
+                if self.pos >= len(self.tokens): break
+                _, comp_val = self.advance()
+                while self.pos < len(self.tokens) and self.peek()[0]!= 'LBRACE':
+                    self.advance()
+                if self.pos < len(self.tokens) and self.peek()[0] == 'LBRACE': self.advance()
+                block = []
+                else_block = []
+                in_else = False
+                while self.pos < len(self.tokens) and self.peek()[0]!= 'RBRACE':
+                    if self.peek()[0] == 'PRINT':
+                        self.advance()
+                        if self.peek()[0]=='LBRACE':
+                            self.advance()
+                            if self.peek()[0]=='RBRACE': self.advance()
+                        k2, v2 = self.advance()
+                        expr = []
+                        if k2 in ('STRING','IDENTIFIER','INT'):
+                            expr.append((k2, v2.strip('"') if k2=='STRING' else v2))
+                            while self.pos < len(self.tokens) and self.peek()[0] == 'PLUS':
+                                self.advance()
+                                k3, v3 = self.advance()
+                                expr.append((k3, v3.strip('"') if k3=='STRING' else v3))
+                            if not in_else:
+                                block.append({'type': 'print_expr', 'expr': expr})
+                            else:
+                                else_block.append({'type': 'print_expr', 'expr': expr})
+                        if self.pos < len(self.tokens) and self.peek()[0] == 'SEMICOLON': self.advance()
+                    elif self.peek()[0] in ('ELSE',):
+                        self.advance()
+                        if self.pos < len(self.tokens) and self.peek()[0]=='LBRACE':
+                            self.advance()
+                            if self.peek()[0]=='RBRACE': self.advance()
+                        in_else = True
+                    else:
+                        self.advance()
+                if self.pos < len(self.tokens) and self.peek()[0] == 'RBRACE': self.advance()
+                statements.append({'type': 'if', 'var': var_name, 'value': comp_val.strip('"'), 'block': block, 'else_block': else_block})
             else:
                 self.advance()
         return statements

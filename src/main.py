@@ -18,6 +18,6 @@ def run_itl_file(path):
     Interpreter().run(statements)
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("ITL Numbered v1.2.0 - BlueBixt Org - Tool System: xxx{} is a Tool")
+        print("ITL Numbered v1.3.0 - BlueBixt - Tools: xxx{} is a Tool - loop{} number{} else{}")
     else:
         run_itl_file(sys.argv[1])

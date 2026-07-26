@@ -6,6 +6,8 @@ class Interpreter:
         for k, v in expr:
             if k == 'STRING':
                 out += v
+            elif k == 'INT':
+                out += v
             else:
                 out += self.vars.get(v, "")
         return out
@@ -24,4 +26,10 @@ class Interpreter:
                 self.vars[stmt['name']] = input()
             elif t == 'if':
                 if self.vars.get(stmt['var'], "") == stmt['value']:
+                    self.run_block(stmt['block'])
+                else:
+                    if stmt.get('else_block'):
+                        self.run_block(stmt['else_block'])
+            elif t == 'loop':
+                for _ in range(stmt['count']):
                     self.run_block(stmt['block'])
