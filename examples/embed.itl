@@ -1,0 +1,19 @@
+itl-lang("start");
+itl-lang("en");
+
+i-video
+i-tool{}
+}
+link-to-i-tool("https://example.com");
+move dz
+dz when-size{}
+{}\nVideosize/n{}
+i-tool{}\nVideo{};
+{}[]{}i-tool
+find{}
+/memorize data
+find{} database(deb.debian.org)*
+{}
+find{} files {use.embed.deb} in the raw debudan $data
+{}
+itl-lang("end");
