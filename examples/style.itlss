@@ -1,0 +1,28 @@
+itlss-lang("start");
+
+dex{
+  background: #0a0a0a;
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  font-family: Inter;
+}
+
+print{
+  color: #3B82F6;
+  font-size: 20px;
+}
+
+i-video{
+  width: 560px;
+  height: 315px;
+  border: 2px solid #3B82F6;
+  border-radius: 12px;
+}
+
+#Example of Element{
+  color: #3B82F6;
+  font-bold: true;
+}
+
+itlss-lang("end");
